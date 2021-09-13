@@ -10,6 +10,8 @@ public class PlayerController : MonoBehaviour
 
     bool isGrounded;
 
+    [SerializeField]
+    Transform groundCheck;
 
     private void Start()
     {
@@ -20,27 +22,39 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if(Physics2D.Linecast(transform.position,groundCheck.position, 1 << LayerMask.NameToLayer("Ground")))
+        {
+            isGrounded = true;
+        }
+        else
+        {
+            isGrounded = false;
+        }
 
         if (Input.GetKey("d"))
         {
             rb2d.velocity = new Vector2(2, rb2d.velocity.y);
-            animator.Play("player_run");
+            if (isGrounded)
+                animator.Play("player_run");
             spriteRenderer.flipX = false;
         }
 
         else if (Input.GetKey("a"))
         {
             rb2d.velocity = new Vector2(-2, rb2d.velocity.y);
-            animator.Play("player_run");
+            if (isGrounded)
+                animator.Play("player_run");
             spriteRenderer.flipX = true;
         }
 
         else
         {
-            animator.Play("player_idle");
+            if (isGrounded)
+                animator.Play("player_idle");
+            rb2d.velocity = new Vector2(0, rb2d.velocity.y);
         }
 
-        if (Input.GetKey("space"))
+        if (Input.GetKey("space") && isGrounded)
         {
             rb2d.velocity = new Vector2(rb2d.velocity.x, 3);
             animator.Play("player_jump");
