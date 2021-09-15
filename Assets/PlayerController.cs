@@ -14,7 +14,13 @@ public class PlayerController : MonoBehaviour
     Transform groundCheck;
 
     [SerializeField]
-    private float runSpeed = 5f;
+    private float runSpeed = 1f;
+
+    [SerializeField]
+    private float maxSpeed = 7f;
+
+    [SerializeField]
+    private float acceleration = 1f;
 
     [SerializeField]
     private float jumpSpeed = 5f;
@@ -41,8 +47,9 @@ public class PlayerController : MonoBehaviour
             animator.Play("player_jump");
         }
 
-        if (Input.GetKey("d"))
+        if (Input.GetKey("d")/* && (runSpeed<maxSpeed)*/)
         {
+            // runSpeed = runSpeed + (acceleration * Time.deltaTime);
             rb2d.velocity = new Vector2(runSpeed, rb2d.velocity.y);
             if (isGrounded)
                 animator.Play("player_run");
