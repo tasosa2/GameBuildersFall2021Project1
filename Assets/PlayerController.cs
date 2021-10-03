@@ -7,24 +7,26 @@ public class PlayerController : MonoBehaviour
     Animator animator;
     Rigidbody2D rb2d;
     SpriteRenderer spriteRenderer;
-
+    
     bool isGrounded;
-
+    
     [SerializeField]
     Transform groundCheck;
 
     [SerializeField]
-    private float runSpeed = 1f;
+    private float speed = 0f;
 
     [SerializeField]
-    private float maxSpeed = 7f;
-
-    [SerializeField]
-    private float acceleration = 1f;
+    private float maxSpeed = 5f;
 
     [SerializeField]
     private float jumpSpeed = 5f;
 
+    [SerializeField]
+    private float acceleration = .1f;
+
+    [SerializeField]
+    private float deceleration = 5f;
 
     private void Start()
     {
@@ -35,9 +37,10 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if((Physics2D.Linecast(transform.position,groundCheck.position, 1 << LayerMask.NameToLayer("Ground"))) ||
+        
+        if((Physics2D.Linecast(transform.position,groundCheck.position, 1 << LayerMask.NameToLayer("Ground")))/* ||
             (Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground"))) ||
-            (Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground"))))
+            (Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground")))*/)
         {
             isGrounded = true;
         }
@@ -46,34 +49,44 @@ public class PlayerController : MonoBehaviour
             isGrounded = false;
             animator.Play("player_jump");
         }
-
-        if (Input.GetKey("d")/* && (runSpeed<maxSpeed)*/)
+        
+        if (Input.GetKey("d") && (speed <= maxSpeed))
         {
-            // runSpeed = runSpeed + (acceleration * Time.deltaTime);
-            rb2d.velocity = new Vector2(runSpeed, rb2d.velocity.y);
+            speed += acceleration;
+            //rb2d.AddForce(new Vector2(maxSpeed, rb2d.velocity.y));
+            rb2d.velocity = new Vector2(speed, rb2d.velocity.y); 
+            
             if (isGrounded)
                 animator.Play("player_run");
+            
             spriteRenderer.flipX = false;
         }
 
         else if (Input.GetKey("a"))
         {
-            rb2d.velocity = new Vector2(-runSpeed, rb2d.velocity.y);
+
+            //rb2d.AddForce(new Vector2(-maxSpeed, rb2d.velocity.y));
+            rb2d.velocity = new Vector2(-maxSpeed, rb2d.velocity.y); 
+
             if (isGrounded)
                 animator.Play("player_run");
+            
             spriteRenderer.flipX = true;
         }
 
         else
         {
+            animator.Play("player_idle");
+            
             if (isGrounded)
                 animator.Play("player_idle");
-            rb2d.velocity = new Vector2(0, rb2d.velocity.y);
+            
+            rb2d.velocity = new Vector2(0, rb2d.velocity.y); 
         }
 
         if (Input.GetKey("space") && isGrounded)
         {
-            rb2d.velocity = new Vector2(rb2d.velocity.x, jumpSpeed);
+            rb2d.velocity = new Vector2(rb2d.velocity.x, jumpSpeed); 
         }
 
     }
