@@ -2,7 +2,7 @@
 using UnityEditor;
 #endif
 using UnityEngine;
-
+//This is code needed to run the camera
 public class SuperMarioCameraFollow : MonoBehaviour
 {
     public Transform target;
