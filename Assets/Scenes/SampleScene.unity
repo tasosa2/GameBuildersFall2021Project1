@@ -41251,7 +41251,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 2
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -41316,8 +41316,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groundCheck: {fileID: 691939929}
   speed: 0
-  maxSpeed: 5
-  jumpSpeed: 112
+  maxSpeed: 8
+  jumpSpeed: 12
   acceleration: 0.1
   deceleration: 0.3
   canJump: 0
